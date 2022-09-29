@@ -1,4 +1,5 @@
 #include<iostream>
+#include <string>
 using namespace std;
 
 
@@ -20,8 +21,10 @@ public:
 	}
   // DO NOT FORGET THE DESTRUCTOR!!!
   ~DoubleLinkedList() {
-
-  }
+        for (Node* p = head; p !=nullptr; p=p->next){
+                delete p->prev;
+        }
+    }
 	void addStart(int v) {
         Node* a = new Node();
         a->val = v;
@@ -45,6 +48,7 @@ public:
 	void removeStart() {
         Node* temp = head;
         head = head->next;
+        head->prev = nullptr;
         delete temp;
 	}
 
@@ -57,6 +61,7 @@ public:
 
         Node* temp = tail;
         tail = tail->prev;
+        tail->next = nullptr;
         delete temp;
         
 
@@ -65,11 +70,28 @@ public:
 
 	// insert v before pos. insert(0,v) would insert at the front.
 	void insert(int pos, int v) {
-
+        int count = 0;
+        for (Node* p = tail; p != nullptr; p=p->prev){
+            if(pos == count){
+                p->val = v;
+                break;
+            }
+            count++;
+        }
+        
 	}
 	// implement to print out the list
 	friend ostream& operator <<(ostream& s, const DoubleLinkedList& list) {
-
+        string c = "<->";
+        for (Node* p = list.head; p !=nullptr; p=p->next){
+            if (p->next == nullptr) {
+                s<<p->val << ' ';
+            }else{
+                s<<p->val << ' ' << c << ' ';
+            }
+            
+        }
+        return s;
 	}
 };
 
@@ -80,14 +102,16 @@ int main() {
 		a.addStart(i);
 	for (int i = 0; i < n; i++)
 		a.addEnd(i);
-	for (int i = 0; i < 3*n/2; i++)
+
+	for (int i = 0; i < (3*n/2); i++)
 		a.removeStart();
-	
+	cout << a << '\n';
 	for (int i = 0; i < n/2 - 5; i++)
 		a.removeEnd();
 
 	cout << a << '\n';
 	for (int i = 0; i < 10; i++)
 		a.insert(1, i);
+    
 	cout << a << '\n';
 }

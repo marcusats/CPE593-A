@@ -72,7 +72,7 @@ class LinkedList {
 
     friend ostream& operator <<(ostream& s, const LinkedList& list) {
         for (Node* p = list.head; p !=nullptr; p=p->next){
-            s<<p->val << ' ';
+            s<<p->val << ' ' << '->' << ' ';
         }
         return s;
     }
